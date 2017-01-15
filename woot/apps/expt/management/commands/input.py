@@ -76,7 +76,7 @@ class Command(BaseCommand):
 				print('step01 | series {}... already exists.'.format(series_name))
 
 			# 2. if lif is not extracted, do it.
-			if len(os.listdir(experiment.storage_path))==0:
+			if len(os.listdir(experiment.storage_path))<2:
 
 				# extract lif
 				lif_path = join(lif_root, lif_name)
@@ -84,7 +84,7 @@ class Command(BaseCommand):
 
 				# run extract
 				print('step01 | Extracting lif ')
-				call('{} {} {}'.format(bfconvert, lif_path, lif_template), shell=True)
+				call('{} {} {} -series {}'.format(bfconvert, lif_path, lif_template, series_name), shell=True)
 
 			else:
 				print('step01 | .lif already extracted for experiment {}, series {}; continuing... '.format(experiment_name, series_name))
