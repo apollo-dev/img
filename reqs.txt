@@ -5,5 +5,4 @@ Django==1.9
 numpy
 scipy
 scikit-image
-matplotlib
 Pillow
