@@ -13,7 +13,6 @@ from scipy.ndimage.measurements import center_of_mass as com
 from skimage import exposure
 import numpy as np
 from scipy.ndimage.measurements import label
-import matplotlib.pyplot as plt
 from scipy.ndimage.morphology import binary_erosion as erode
 from scipy.ndimage.morphology import binary_dilation as dilate
 from scipy.ndimage import distance_transform_edt
