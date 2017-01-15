@@ -23,11 +23,18 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 
 		# vars
-		path = options['path']
+		if 'path' in options:
+			path = options['path']
 
-		with open('./setup.json', 'r+') as setup_file:
-			data = json.loads(setup_file.read())
-			data['data_path'] = path
-			setup_file.seek(0)
-			setup_file.write(json.dumps(data))
-			setup_file.truncate()
+			with open('./setup.json', 'r+') as setup_file:
+				data = json.loads(setup_file.read())
+				data['data_path'] = path
+				setup_file.seek(0)
+				setup_file.write(json.dumps(data))
+				setup_file.truncate()
+
+		if 'bf_ratio' in options:
+			bf_ratio = options['bf_ratio']
+
+		if 'gfp_sigma' in options:
+			gfp_sigma = options['gfp_sigma']
