@@ -18,14 +18,17 @@
 4. create a virtualenv
 ~$ mkvirtualenv img --python=/usr/local/bin/python3
 
-5. install the requirements
+5. go into the virtualenv
+~$ workon img
+
+6. install the requirements
 ~$ pip install -r reqs.txt
 
-6. setup the database
+7. setup the database
 ~$ sh scripts/make_migrations.sh
 ~$ dm migrate
 
-7. setup the data path
+8. setup the data path
 ~$ dm setup --path='<THE PATH WHERE THE PROJECTS WILL LIVE>'
 
 READY
@@ -39,4 +42,4 @@ There are four commands to run
 
 There are options associated with each one:
 1. dm input
-	a. 
+	a.
