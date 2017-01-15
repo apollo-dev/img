@@ -24,11 +24,14 @@
 6. install the requirements
 ~$ pip install -r reqs.txt
 
-7. setup the database
+7. create database directory
+~$ mkdir db
+
+8. setup the database
 ~$ sh scripts/make_migrations.sh
 ~$ dm migrate
 
-8. setup the data path
+9. setup the data path
 ~$ dm setup --path='<THE PATH WHERE THE PROJECTS WILL LIVE>'
 
 READY
