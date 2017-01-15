@@ -6,7 +6,7 @@
 import os
 from datetime import timedelta
 from os import mkdir
-from os.path import abspath, basename, dirname, join, normpath, exists
+from os.path import abspath, basename, dirname, join, normpath, exists, expanduser
 from sys import path
 import string
 import json
@@ -31,7 +31,11 @@ SITE_NAME = basename(dirname(DJANGO_ROOT))
 # name in our dotted import paths:
 path.append(DJANGO_ROOT)
 
-DATA_ROOT = '/Users/duozhang007/Desktop/img/'
+DATA_ROOT = expanduser('~/Desktop/img/')
+with open('./setup.json') as setup_file:
+	data = json.loads(setup_file.read())
+	DATA_ROOT = expanduser(data['data_path'])
+
 LIF_ROOT = join(DATA_ROOT, 'lif')
 BACKUP_ROOT = join(DATA_ROOT, 'backup')
 ########## END PATH CONFIGURATION
