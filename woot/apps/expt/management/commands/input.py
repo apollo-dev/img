@@ -1,4 +1,3 @@
-# expt.command: step01_input
 
 # django
 from django.core.management.base import BaseCommand, CommandError
@@ -42,7 +41,6 @@ class Command(BaseCommand):
 			default='', # some default
 			help='Name of the .lif archive' # who cares
 		),
-
 	)
 
 	args = ''
