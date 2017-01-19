@@ -132,7 +132,7 @@ class Command(BaseCommand):
 
 			# 5. composite
 			print('step01 | creating composite for experiment {} series {}'.format(experiment_name, series_name))
-			composite = series.compose()
+			composite = series.composites.get() if series.composites.count() else series.compose()
 
 			# 6. make zmod channels
 			if composite.channels.filter(name='-zmod').count()==0:
