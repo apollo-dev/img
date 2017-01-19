@@ -2,6 +2,7 @@
 
 # django
 from django.db import models
+from django.db import transaction
 
 # local
 from apps.expt.data import *
@@ -195,63 +196,64 @@ class Series(models.Model):
 				composite_template.save()
 
 		# iterate over paths
-		for channel in self.experiment.channels.all():
-			composite_channel, composite_channel_created = composite.channels.get_or_create(name=channel.name)
+		with transaction.atomic():
+			for channel in self.experiment.channels.all():
+				composite_channel, composite_channel_created = composite.channels.get_or_create(name=channel.name)
 
-			for t in range(self.ts):
+				for t in range(self.ts):
 
-				# path set
-				path_set = self.paths.filter(channel=channel, t=t)
+					# path set
+					path_set = self.paths.filter(channel=channel, t=t)
 
-				# if the total number of paths is less than a great gon, do not make one. Save only individual gons.
-				if path_set.count()==self.zs:
+					# if the total number of paths is less than a great gon, do not make one. Save only individual gons.
+					if path_set.count()==self.zs:
 
-					# gon
-					gon, gon_created = self.gons.get_or_create(experiment=self.experiment, composite=composite, channel=composite_channel, t=t)
-					if gon_created:
-						gon.set_origin(0,0,0,t)
-						gon.set_extent(self.rs, self.cs, self.zs)
-
-					for z in range(self.zs):
-
-						# path
-						path = path_set.get(channel=channel, t=t, z=z)
-						template = composite.templates.get(name=path.template.name)
-						gon.template = template
-						gon.paths.get_or_create(composite=composite, channel=composite_channel, template=template, url=path.url, file_name=path.file_name, t=t, z=z)
-
-						# sub gon
-						sub_gon, sub_gon_created = self.gons.get_or_create(experiment=self.experiment, gon=gon, channel=composite_channel, template=template, t=t, z=z)
-						E = z==self.zs-1 and t==self.ts-1
-						if sub_gon_created:
-							print('step01 | composing {} series {}... channel {} t{} z{}... created.{}'.format(self.experiment.name, self.name, channel.name, t, z, spacer), end='\n' if E else '\r')
-							sub_gon.set_origin(0,0,z,t)
-							sub_gon.set_extent(self.rs, self.cs, 1)
-							sub_gon.paths.create(composite=composite, channel=composite_channel, template=template, url=path.url, file_name=path.file_name, t=t, z=z)
-
-						else:
-							print('step01 | composing {} series {}... channel {} t{} z{}... already exists.{}'.format(self.experiment.name, self.name, channel.name, t, z, spacer), end='\n' if E else '\r')
-
-						sub_gon.save()
-
-					gon.save()
-
-
-				else: # disfuse gon structure (reduced, regions)
-					L = len(path_set) - 1
-					for i, path in enumerate(path_set):
-						E = i==L and t==self.ts-1
-						print('step01 | composing {} series {}... channel {} t{} z{}... created diffuse.{}'.format(self.experiment.name, self.name, channel.name, t, path.z, spacer), end='\n' if E else '\r')
-
-						template = composite.templates.get(name=path.template.name)
-						gon, gon_created = self.gons.get_or_create(experiment=self.experiment, composite=composite, channel=composite_channel, template=template, t=t, z=path.z)
+						# gon
+						gon, gon_created = self.gons.get_or_create(experiment=self.experiment, composite=composite, channel=composite_channel, t=t)
 						if gon_created:
-							gon.set_origin(0,0,path.z,t)
-							gon.set_extent(self.rs, self.cs, 1)
+							gon.set_origin(0,0,0,t)
+							gon.set_extent(self.rs, self.cs, self.zs)
 
-							gon.paths.create(composite=composite, channel=composite_channel, template=template, url=path.url, file_name=path.file_name, t=t, z=path.z)
+						for z in range(self.zs):
+
+							# path
+							path = path_set.get(channel=channel, t=t, z=z)
+							template = composite.templates.get(name=path.template.name)
+							gon.template = template
+							gon.paths.get_or_create(composite=composite, channel=composite_channel, template=template, url=path.url, file_name=path.file_name, t=t, z=z)
+
+							# sub gon
+							sub_gon, sub_gon_created = self.gons.get_or_create(experiment=self.experiment, gon=gon, channel=composite_channel, template=template, t=t, z=z)
+							E = z==self.zs-1 and t==self.ts-1
+							if sub_gon_created:
+								print('step01 | composing {} series {}... channel {} t{} z{}... created.{}'.format(self.experiment.name, self.name, channel.name, t, z, spacer), end='\n' if E else '\r')
+								sub_gon.set_origin(0,0,z,t)
+								sub_gon.set_extent(self.rs, self.cs, 1)
+								sub_gon.paths.create(composite=composite, channel=composite_channel, template=template, url=path.url, file_name=path.file_name, t=t, z=z)
+
+							else:
+								print('step01 | composing {} series {}... channel {} t{} z{}... already exists.{}'.format(self.experiment.name, self.name, channel.name, t, z, spacer), end='\n' if E else '\r')
+
+							sub_gon.save()
 
 						gon.save()
+
+
+					else: # disfuse gon structure (reduced, regions)
+						L = len(path_set) - 1
+						for i, path in enumerate(path_set):
+							E = i==L and t==self.ts-1
+							print('step01 | composing {} series {}... channel {} t{} z{}... created diffuse.{}'.format(self.experiment.name, self.name, channel.name, t, path.z, spacer), end='\n' if E else '\r')
+
+							template = composite.templates.get(name=path.template.name)
+							gon, gon_created = self.gons.get_or_create(experiment=self.experiment, composite=composite, channel=composite_channel, template=template, t=t, z=path.z)
+							if gon_created:
+								gon.set_origin(0,0,path.z,t)
+								gon.set_extent(self.rs, self.cs, 1)
+
+								gon.paths.create(composite=composite, channel=composite_channel, template=template, url=path.url, file_name=path.file_name, t=t, z=path.z)
+
+							gon.save()
 
 		composite.save()
 		return composite
