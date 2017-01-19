@@ -132,6 +132,43 @@ def mod_zmod(composite, mod_id, algorithm, **kwargs):
 		zcomp_gon.save_array(composite.series.experiment.composite_path, template)
 		zcomp_gon.save()
 
+def mod_zmax(composite, mod_id, algorithm, **kwargs):
+	# template
+	template = composite.templates.get(name='source') # SOURCE TEMPLATE
+
+	# channels
+	zmax_channel, zmax_channel_created = composite.channels.get_or_create(name='-zmax')
+
+	# constants
+	delta_z = -8
+	size = 5
+	sigma = 3
+	template = composite.templates.get(name='source')
+
+	# iterate over frames
+	for t in range(composite.series.ts):
+		print('step01 | processing mod_zmax t{}/{}...'.format(t+1, composite.series.ts), end='\r')
+
+		# load gfp
+		gfp_gon = composite.gons.get(t=t, channel__name='0')
+		gfp = exposure.rescale_intensity(gfp_gon.load() * 1.0)
+		gfp = gf(gfp, sigma=sigma) # <<< SMOOTHING
+
+		# load bf
+		bf_gon = composite.gons.get(t=t, channel__name='-zbf')
+		bf = exposure.rescale_intensity(bf_gon.load() * 1.0)
+
+		# create zmax and merge with bf
+		f = np.max(gfp, axis=2) * 0.9 + bf * 0.1
+
+		zmax_gon, zmax_gon_created = composite.gons.get_or_create(experiment=composite.experiment, series=composite.series, channel=zmod_channel, t=t)
+		zmax_gon.set_origin(0,0,0,t)
+		zmax_gon.set_extent(composite.series.rs, composite.series.cs, 1)
+
+		zmax_gon.array = f
+		zmax_gon.save_array(composite.series.experiment.composite_path, template)
+		zmax_gon.save()
+
 def mod_tile(composite, mod_id, algorithm, **kwargs):
 
 	tile_path = os.path.join(composite.experiment.video_path, 'tile', composite.series.name)
