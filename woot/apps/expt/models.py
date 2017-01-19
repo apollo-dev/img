@@ -80,8 +80,6 @@ class Experiment(models.Model):
 		for template in self.templates.all():
 			match_template = template if template.match(path) is not None else match_template
 
-		print(path, match_template, series_name)
-
 		if match_template is not None:
 
 			# metadata
