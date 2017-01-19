@@ -64,5 +64,11 @@ class Command(BaseCommand):
 			else:
 				print('step01 | zmax already exists...')
 
+			# copy
+			for gon in composite.channels.get(name='-zmax').gons.all():
+				if not exists(join(composite.experiment.base_path, 'ij2', series.name)):
+					os.makedirs(join(composite.experiment.base_path, 'ij2', series.name))
+				sh.copy2(gon.paths.get().url, join(composite.experiment.base_path, 'ij2', series.name, gon.paths.get().file_name))
+
 		else:
 			print('Please enter an experiment')
