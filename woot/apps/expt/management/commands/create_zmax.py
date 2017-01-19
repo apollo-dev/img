@@ -53,16 +53,16 @@ class Command(BaseCommand):
 
 			# 6. make zmod channels
 			composite = series.composites.get()
-			if composite.channels.filter(name='-zmax').count()==0 or (composite.channels.get(name='-zmax').gons.count()==0 if composite.channels.filter(name='-zmax') else True):
-				mod = composite.mods.create(id_token=generate_id_token('img', 'Mod'), algorithm='mod_zmax')
 
-				# Run mod
-				print('step01 | processing mod_zmax...', end='\r')
-				mod.run()
-				print('step01 | processing mod_zmax... done.{}'.format(spacer))
+			if composite.channels.filter(name='-zmax'):
+				composite.channels.get(name='-zmax').delete()
 
-			else:
-				print('step01 | zmax already exists...')
+			mod = composite.mods.create(id_token=generate_id_token('img', 'Mod'), algorithm='mod_zmax')
+
+			# Run mod
+			print('step01 | processing mod_zmax...', end='\r')
+			mod.run()
+			print('step01 | processing mod_zmax... done.{}'.format(spacer))
 
 			# copy
 			for gon in composite.channels.get(name='-zmax').gons.all():
