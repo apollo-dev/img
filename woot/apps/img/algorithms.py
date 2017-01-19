@@ -161,7 +161,7 @@ def mod_zmax(composite, mod_id, algorithm, **kwargs):
 		# create zmax and merge with bf
 		f = np.max(gfp, axis=2) * 0.9 + bf * 0.1
 
-		zmax_gon, zmax_gon_created = composite.gons.get_or_create(experiment=composite.experiment, series=composite.series, channel=zmod_channel, t=t)
+		zmax_gon, zmax_gon_created = composite.gons.get_or_create(experiment=composite.experiment, series=composite.series, channel=zmax_channel, t=t)
 		zmax_gon.set_origin(0,0,0,t)
 		zmax_gon.set_extent(composite.series.rs, composite.series.cs, 1)
 

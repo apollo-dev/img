@@ -44,7 +44,6 @@ class Command(BaseCommand):
 		# vars
 		experiment_name = options['expt']
 		series_name = options['series']
-		lif_name = options['lif']
 		data_root = settings.DATA_ROOT
 
 		# 1. create experiment and series
@@ -53,7 +52,8 @@ class Command(BaseCommand):
 			series = experiment.series.get(name=series_name)
 
 			# 6. make zmod channels
-			if composite.channels.filter(name='-zmax').count()==0:
+			composite = series.composites.get()
+			if composite.channels.filter(name='-zmax').count()==0 or (composite.channels.get(name='-zmax').gons.count()==0 if composite.channels.filter(name='-zmax') else True):
 				mod = composite.mods.create(id_token=generate_id_token('img', 'Mod'), algorithm='mod_zmax')
 
 				# Run mod
