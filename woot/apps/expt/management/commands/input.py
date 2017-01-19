@@ -135,7 +135,7 @@ class Command(BaseCommand):
 			composite = series.composites.get() if series.composites.count() else series.compose()
 
 			# 6. make zmod channels
-			if composite.channels.filter(name='-zmod').count()==0:
+			if composite.channels.filter(name='-zmod').count()==0 || (composite.channels.get(name='-zmod').gons.count()==0 if composite.channels.filter(name='-zmod') else True):
 				mod = composite.mods.create(id_token=generate_id_token('img', 'Mod'), algorithm='mod_zmod')
 
 				# Run mod
