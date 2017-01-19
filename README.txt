@@ -46,3 +46,8 @@ There are four commands to run
 There are options associated with each one:
 1. dm input
 	a.
+
+TODO
+Only create one composite
+Add pipeline command
+Add export command

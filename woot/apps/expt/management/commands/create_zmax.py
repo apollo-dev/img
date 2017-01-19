@@ -34,13 +34,6 @@ class Command(BaseCommand):
 			default='', # some default
 			help='Name of the series' # who cares
 		),
-
-		make_option('--lif', # option that will appear in cmd
-			action='store', # no idea
-			dest='lif', # refer to this in options variable
-			default='', # some default
-			help='Name of the .lif archive' # who cares
-		),
 	)
 
 	args = ''
@@ -53,9 +46,6 @@ class Command(BaseCommand):
 		series_name = options['series']
 		lif_name = options['lif']
 		data_root = settings.DATA_ROOT
-		lif_root = settings.LIF_ROOT
-		bfconvert = join(data_root, 'bftools', 'bfconvert')
-		showinf = join(data_root, 'bftools', 'showinf')
 
 		# 1. create experiment and series
 		if experiment_name!='' and series_name!='':
