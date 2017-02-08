@@ -53,7 +53,7 @@ def mod_zmod(composite, mod_id, algorithm, **kwargs):
 	# constants
 	delta_z = -8
 	size = 5
-	sigma = 5
+	sigma = 2
 	template = composite.templates.get(name='source')
 
 	# iterate over frames
@@ -249,7 +249,7 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 		draw = ImageDraw.Draw(blank_slate_img)
 		for unique in [u for u in np.unique(region_mask) if u>0]:
 			if composite.series.region_instances.filter(region_track_instance__t=t, mode_gray_value_id=unique).count()>0:
-				region = composite.series.region_instances.get(region_track_instance__t=t, mode_gray_value_id=unique).region
+				region = composite.series.region_instances.filter(region_track_instance__t=t, mode_gray_value_id=unique)[0].region
 
 				# get coords (isolate mask, cut to black, use r/c)
 				isolated_mask = region_mask==unique
@@ -303,7 +303,7 @@ def mod_region_test(composite, mod_id, algorithm, **kwargs):
 		draw = ImageDraw.Draw(blank_slate_img)
 		for unique in [u for u in np.unique(region_mask) if u>0]:
 			if composite.series.region_instances.filter(region_track_instance__t=t, mode_gray_value_id=unique).count()>0:
-				region = composite.series.region_instances.get(region_track_instance__t=t, mode_gray_value_id=unique).region
+				region = composite.series.region_instances.filter(region_track_instance__t=t, mode_gray_value_id=unique)[0].region
 
 				# get coords (isolate mask, cut to black, use r/c)
 				isolated_mask = region_mask==unique
