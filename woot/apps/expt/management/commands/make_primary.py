@@ -52,7 +52,7 @@ class Command(BaseCommand):
 			# 6. make zmod channels
 			composite = series.composites.get()
 			zcomp_channel = composite.channels.get(name='-zcomp')
-			marker_channel_primary_name = marker_channel.primary(unique='000')
+			marker_channel_primary_name = zcomp_channel.primary(unique='000')
 
 		else:
 			print('Please enter an experiment')
