@@ -138,7 +138,7 @@ class Command(BaseCommand):
 
 			# 4. Segment zdiff channel
 			zmax_channel = composite.channels.get(name='-zmax')
-			zmax_unique = zdiff_channel.segment(marker_channel_name='-zmax')
+			zmax_unique = zmax_channel.segment()
 
 			# 7. Export data to data directory
 			series.export_data()
