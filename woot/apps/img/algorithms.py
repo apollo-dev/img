@@ -142,7 +142,7 @@ def mod_zmax(composite, mod_id, algorithm, **kwargs):
 	# constants
 	delta_z = -8
 	size = 5
-	sigma = 3
+	sigma = 2
 	template = composite.templates.get(name='source')
 
 	# iterate over frames
@@ -159,7 +159,7 @@ def mod_zmax(composite, mod_id, algorithm, **kwargs):
 		bf = exposure.rescale_intensity(bf_gon.load() * 1.0)
 
 		# create zmax and merge with bf
-		f = exposure.rescale_intensity(np.max(gfp, axis=2)) * 0.6 + bf * 0.4
+		f = exposure.rescale_intensity(np.max(gfp, axis=2)) * 0.9 + bf * 0.1
 
 		zmax_gon, zmax_gon_created = composite.gons.get_or_create(experiment=composite.experiment, series=composite.series, channel=zmax_channel, t=t)
 		zmax_gon.set_origin(0,0,0,t)
