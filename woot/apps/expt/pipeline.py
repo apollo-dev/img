@@ -9,7 +9,7 @@ def marker_pipeline(experiment_prefix, unique_key, primary_channel_name, seconda
 Version:3\n\
 DateRevision:20140723173957\n\
 GitHash:6c2d896\n\
-ModuleCount:7\n\
+ModuleCount:8\n\
 HasImagePlaneDetails:False\n\
 \n\
 LoadImages:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
@@ -83,7 +83,25 @@ ApplyThreshold:[module_num:2|svn_version:\'Unknown\'|variable_revision_number:7|
 		Method to calculate adaptive window size:Image size\n\
 		Size of adaptive window:10\n\
 \n\
-IdentifyPrimaryObjects:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:10|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+ImageMath:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:4|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+		Operation:Add\n\
+		Raise the power of the result by:1.0\n\
+		Multiply the result by:1.0\n\
+		Add to result:0.0\n\
+		Set values less than 0 equal to 0?:Yes\n\
+		Set values greater than 1 equal to 1?:Yes\n\
+		Ignore the image masks?:No\n\
+		Name the output image:SecondaryPlusThreshold\n\
+		Image or measurement?:Image\n\
+		Select the first image:Secondary\n\
+		Multiply the first image by:1.0\n\
+		Measurement:\n\
+		Image or measurement?:Image\n\
+		Select the second image:SecondaryThreshold\n\
+		Multiply the second image by:1.0\n\
+		Measurement:\n\
+\n\
+IdentifyPrimaryObjects:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:10|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the input image:Primary\n\
 		Name the primary objects to be identified:Markers\n\
 		Typical diameter of objects, in pixel units (Min,Max):3,13\n\
@@ -124,11 +142,11 @@ IdentifyPrimaryObjects:[module_num:3|svn_version:\'Unknown\'|variable_revision_n
 		Method to calculate adaptive window size:Image size\n\
 		Size of adaptive window:10\n\
 \n\
-IdentifySecondaryObjects:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:9|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+IdentifySecondaryObjects:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:9|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the input objects:Markers\n\
 		Name the objects to be identified:Cells\n\
 		Select the method to identify the secondary objects:Propagation\n\
-		Select the input image:SecondaryThreshold\n\
+		Select the input image:SecondaryPlusThreshold\n\
 		Number of pixels by which to expand the primary objects:10\n\
 		Regularization factor:0.05\n\
 		Name the outline image:SecondaryOutlines\n\
@@ -157,11 +175,11 @@ IdentifySecondaryObjects:[module_num:4|svn_version:\'Unknown\'|variable_revision
 		Method to calculate adaptive window size:Image size\n\
 		Size of adaptive window:10\n\
 \n\
-MeasureObjectSizeShape:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:1|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+MeasureObjectSizeShape:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:1|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select objects to measure:Cells\n\
 		Calculate the Zernike features?:No\n\
 \n\
-SaveImages:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+SaveImages:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the type of image to save:Objects\n\
 		Select the image to save:None\n\
 		Select the objects to save:Cells\n\
@@ -185,7 +203,7 @@ SaveImages:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:11|sho
 		Base image folder:Elsewhere...\x7C\n\
 		Saved movie format:avi\n\
 \n\
-ExportToSpreadsheet:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+ExportToSpreadsheet:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the column delimiter:Comma (",")\n\
 		Add image metadata columns to your object data file?:No\n\
 		Limit output to a size that is allowed in Excel?:No\n\
