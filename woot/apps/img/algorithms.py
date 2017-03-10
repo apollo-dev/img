@@ -259,7 +259,8 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 				isolated_mask = region_mask==unique
 				cut, (r0,c0,rs,cs) = cut_to_black(isolated_mask)
 
-				draw.text((c0+cs/2-20, zbf_gon.rs-r0-20), '{}'.format(region.name), font=ImageFont.load_default(), fill='rgb(0,0,255)')
+				if region.name == 'barrier':
+					draw.text((c0+cs/2-20, zbf_gon.rs-r0-50), '{}'.format(region.name), font=ImageFont.load_default(), fill='rgb(0,0,255)')
 
 		blank_slate = np.array(blank_slate_img)
 
