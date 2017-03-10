@@ -57,7 +57,7 @@ class Command(BaseCommand):
 
 			# Run mod
 			print('step01 | processing mod_tile...', end='\r')
-			mod.run()
+			mod.run(channel_unique_override=composite.current_zedge_unique)
 			print('step01 | processing mod_tile... done.{}'.format(spacer))
 
 		else:
