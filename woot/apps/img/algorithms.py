@@ -177,14 +177,16 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 
 	for t in range(composite.series.ts):
 		zbf_gon = composite.gons.get(t=t, channel__name='-zbf')
-		zcomp_gon = composite.gons.get(t=t, channel__name='-zcomp')
-		zmean_gon = composite.gons.get(t=t, channel__name='-zmean')
+		zmax_gon = composite.gons.get(t=t, channel__name='-zmax')
 		mask_mask = composite.masks.get(t=t, channel__name__contains=kwargs['channel_unique_override'])
 
 		zbf = zbf_gon.load()
-		zcomp = zcomp_gon.load()
-		zmean = zmean_gon.load()
+		zmax = zbf_gon.load()
 		mask = mask_mask.load()
+
+		zbf = np.flipud(zbf)
+		zmax = np.flipud(zmax)
+		mask = np.flipud(mask)
 
 		mask_outline = mask_edge_image(mask)
 
@@ -192,55 +194,57 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 		zbf_mask_g = zbf.copy()
 		zbf_mask_b = zbf.copy()
 
-		zcomp_mask_r = zcomp.copy()
-		zcomp_mask_g = zcomp.copy()
-		zcomp_mask_b = zcomp.copy()
+		zmax_mask_r = zmax.copy()
+		zmax_mask_g = zmax.copy()
+		zmax_mask_b = zmax.copy()
 
 		# drawing
 		# 1. draw outlines in red channel
 		zbf_mask_r[mask_outline>0] = 255
 		zbf_mask_g[mask_outline>0] = 0
 		zbf_mask_b[mask_outline>0] = 0
-		zcomp_mask_r[mask_outline>0] = 255
-		zcomp_mask_g[mask_outline>0] = 0
-		zcomp_mask_b[mask_outline>0] = 0
+		zmax_mask_r[mask_outline>0] = 255
+		zmax_mask_g[mask_outline>0] = 0
+		zmax_mask_b[mask_outline>0] = 0
 
 		markers = composite.markers.filter(track_instance__t=t, track__cell__isnull=False)
 		for marker in markers:
 
 			# 2. draw markers in blue channel
-			zbf_mask_r[marker.r-2:marker.r+3,marker.c-2:marker.c+3] = 0
-			zbf_mask_g[marker.r-2:marker.r+3,marker.c-2:marker.c+3] = 0
-			zbf_mask_b[marker.r-2:marker.r+3,marker.c-2:marker.c+3] = 255
-			zcomp_mask_r[marker.r-2:marker.r+3,marker.c-2:marker.c+3] = 0
-			zcomp_mask_g[marker.r-2:marker.r+3,marker.c-2:marker.c+3] = 0
-			zcomp_mask_b[marker.r-2:marker.r+3,marker.c-2:marker.c+3] = 255
+			r = zbf_gon .rs - marker.r
+			zbf_mask_r[r-2:r+3,marker.c-2:marker.c+3] = 0
+			zbf_mask_g[r-2:marker.r+3,marker.c-2:marker.c+3] = 0
+			zbf_mask_b[.r-2:.r+3,marker.c-2:marker.c+3] = 255
+			zmax_mask_r[.r-2:.r+3,marker.c-2:marker.c+3] = 0
+			zmax_mask_g[.r-2:.r+3,marker.c-2:marker.c+3] = 0
+			zmax_mask_b[.r-2:.r+3,marker.c-2:marker.c+3] = 255
 
 			# 3. draw text in green channel
 			blank_slate = np.zeros(zbf.shape)
 			blank_slate_img = Image.fromarray(blank_slate)
 			draw = ImageDraw.Draw(blank_slate_img)
-			draw.text((marker.c+5, marker.r+5), '{}'.format(marker.track.cell.pk), font=ImageFont.load_default(), fill='rgb(0,0,255)')
+			draw.text((marker.c+5, r+5), '{}'.format(marker.track.cell.pk), font=ImageFont.load_default(), fill='rgb(0,0,255)')
 			blank_slate = np.array(blank_slate_img)
 
 			zbf_mask_r[blank_slate>0] = 0
 			zbf_mask_g[blank_slate>0] = 255
 			zbf_mask_b[blank_slate>0] = 0
-			zcomp_mask_r[blank_slate>0] = 0
-			zcomp_mask_g[blank_slate>0] = 255
-			zcomp_mask_b[blank_slate>0] = 0
+			zmax_mask_r[blank_slate>0] = 0
+			zmax_mask_g[blank_slate>0] = 255
+			zmax_mask_b[blank_slate>0] = 0
 
 		# regions
 		region_mask = composite.masks.get(t=t, channel__name__contains=composite.current_region_unique).load()
+		region_mask = np.flipud(region_mask)
 		region_mask_edges = mask_edge_image(region_mask)
 
 		zbf_mask_r[region_mask_edges>0] = 100
 		zbf_mask_g[region_mask_edges>0] = 100
 		zbf_mask_b[region_mask_edges>0] = 100
 
-		zcomp_mask_r[region_mask_edges>0] = 100
-		zcomp_mask_g[region_mask_edges>0] = 100
-		zcomp_mask_b[region_mask_edges>0] = 100
+		zmax_mask_r[region_mask_edges>0] = 100
+		zmax_mask_g[region_mask_edges>0] = 100
+		zmax_mask_b[region_mask_edges>0] = 100
 
 		# region labels
 		# prepare drawing
@@ -255,7 +259,7 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 				isolated_mask = region_mask==unique
 				cut, (r0,c0,rs,cs) = cut_to_black(isolated_mask)
 
-				draw.text((c0+30, r0+30), '{}'.format(region.name), font=ImageFont.load_default(), fill='rgb(0,0,255)')
+				draw.text((c0+30, zbf_gon.rs-(r0+30)), '{}'.format(region.name), font=ImageFont.load_default(), fill='rgb(0,0,255)')
 
 		blank_slate = np.array(blank_slate_img)
 
@@ -263,13 +267,13 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 		zbf_mask_g[blank_slate>0] = 0
 		zbf_mask_b[blank_slate>0] = 255
 
-		zcomp_mask_r[blank_slate>0] = 0
-		zcomp_mask_g[blank_slate>0] = 0
-		zcomp_mask_b[blank_slate>0] = 255
+		zmax_mask_r[blank_slate>0] = 0
+		zmax_mask_g[blank_slate>0] = 0
+		zmax_mask_b[blank_slate>0] = 255
 
 		# tile zbf, zbf_mask, zcomp, zcomp_mask
 		top_half = np.concatenate((np.dstack([zbf, zbf, zbf]), np.dstack([zbf_mask_r, zbf_mask_g, zbf_mask_b])), axis=0)
-		bottom_half = np.concatenate((np.dstack([zmean, zmean, zmean]), np.dstack([zcomp_mask_r, zcomp_mask_g, zcomp_mask_b])), axis=0)
+		bottom_half = np.concatenate((np.dstack([zmax, zmax, zmax]), np.dstack([zmax_mask_r, zmax_mask_g, zmax_mask_b])), axis=0)
 
 		whole = np.concatenate((top_half, bottom_half), axis=1)
 
