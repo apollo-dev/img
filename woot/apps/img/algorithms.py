@@ -181,7 +181,7 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 		mask_mask = composite.masks.get(t=t, channel__name__contains=kwargs['channel_unique_override'])
 
 		zbf = zbf_gon.load()
-		zmax = zbf_gon.load()
+		zmax = zmax_gon.load()
 		mask = mask_mask.load()
 
 		zbf = np.flipud(zbf)
@@ -213,7 +213,7 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 			# 2. draw markers in blue channel
 			r = zbf_gon .rs - marker.r
 			zbf_mask_r[r-2:r+3,marker.c-2:marker.c+3] = 0
-			zbf_mask_g[r-2:marker.r+3,marker.c-2:marker.c+3] = 0
+			zbf_mask_g[r-2:r+3,marker.c-2:marker.c+3] = 0
 			zbf_mask_b[r-2:r+3,marker.c-2:marker.c+3] = 255
 			zmax_mask_r[r-2:r+3,marker.c-2:marker.c+3] = 0
 			zmax_mask_g[r-2:r+3,marker.c-2:marker.c+3] = 0
