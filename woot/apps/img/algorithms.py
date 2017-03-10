@@ -214,10 +214,10 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 			r = zbf_gon .rs - marker.r
 			zbf_mask_r[r-2:r+3,marker.c-2:marker.c+3] = 0
 			zbf_mask_g[r-2:marker.r+3,marker.c-2:marker.c+3] = 0
-			zbf_mask_b[.r-2:.r+3,marker.c-2:marker.c+3] = 255
-			zmax_mask_r[.r-2:.r+3,marker.c-2:marker.c+3] = 0
-			zmax_mask_g[.r-2:.r+3,marker.c-2:marker.c+3] = 0
-			zmax_mask_b[.r-2:.r+3,marker.c-2:marker.c+3] = 255
+			zbf_mask_b[r-2:r+3,marker.c-2:marker.c+3] = 255
+			zmax_mask_r[r-2:r+3,marker.c-2:marker.c+3] = 0
+			zmax_mask_g[r-2:r+3,marker.c-2:marker.c+3] = 0
+			zmax_mask_b[r-2:r+3,marker.c-2:marker.c+3] = 255
 
 			# 3. draw text in green channel
 			blank_slate = np.zeros(zbf.shape)
