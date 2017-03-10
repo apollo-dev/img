@@ -274,6 +274,7 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 		# tile zbf, zbf_mask, zcomp, zcomp_mask
 		top_half = np.concatenate((np.dstack([zbf, zbf, zbf]), np.dstack([zbf_mask_r, zbf_mask_g, zbf_mask_b])), axis=0)
 		bottom_half = np.concatenate((np.dstack([zmax, zmax, zmax]), np.dstack([zmax_mask_r, zmax_mask_g, zmax_mask_b])), axis=0)
+		print(top_half.shape, bottom_half.shape)
 
 		whole = np.concatenate((top_half, bottom_half), axis=1)
 
