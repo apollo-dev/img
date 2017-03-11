@@ -5,3 +5,4 @@
 lib/
 bin/
 *.cfg
+pip-selfcheck.json
