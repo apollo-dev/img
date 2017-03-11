@@ -6,3 +6,4 @@ lib/
 bin/
 *.cfg
 pip-selfcheck.json
+share/
