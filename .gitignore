@@ -2,3 +2,6 @@
 *.sqlite3
 *.lif
 *.tiff
+lib/
+bin/
+*.cfg
