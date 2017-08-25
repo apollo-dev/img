@@ -189,7 +189,7 @@ IdentifySecondaryObjects:[module_num:7|svn_version:\'Unknown\'|variable_revision
 		Masking objects:None\n\
 		Two-class or three-class thresholding?:Three classes\n\
 		Minimize the weighted variance or the entropy?:Entropy\n\
-		Assign pixels in the middle intensity class to the foreground or the background?:Background\
+		Assign pixels in the middle intensity class to the foreground or the background?:Background\n\
 		Method to calculate adaptive window size:Image size\n\
 		Size of adaptive window:10\n\
 \n\
