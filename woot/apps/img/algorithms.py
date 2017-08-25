@@ -142,7 +142,7 @@ def mod_zmax(composite, mod_id, algorithm, **kwargs):
 	# constants
 	delta_z = -8
 	size = 5
-	sigma = 2
+	sigma = 1
 	template = composite.templates.get(name='source')
 
 	# iterate over frames

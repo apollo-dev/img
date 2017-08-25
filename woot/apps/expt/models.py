@@ -3,6 +3,7 @@
 # django
 from django.db import models
 from django.db import transaction
+from django.db.models import Min
 
 # local
 from apps.expt.data import *
@@ -284,6 +285,9 @@ class Series(models.Model):
 		data_file.data = [cell_instance.line() for cell_instance in self.cell_instances.all()]
 		data_file.save_data(headers)
 		data_file.save()
+
+	def lowest_cell_index(self):
+		return int(self.cells.all().aggregate(min=Min('pk'))['min'])
 
 class PathChannel(models.Model):
 	# connections

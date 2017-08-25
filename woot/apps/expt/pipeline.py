@@ -58,50 +58,68 @@ LoadImages:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:11|sho
 		Channel number:1\n\
 		Rescale intensities?:Yes\n\
 \n\
-ApplyThreshold:[module_num:2|svn_version:\'Unknown\'|variable_revision_number:7|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+EnhanceEdges:[module_num:2|svn_version:\'Unknown\'|variable_revision_number:2|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the input image:Secondary\n\
-		Name the output image:SecondaryThreshold\n\
-		Select the output image type:Grayscale\n\
-		Set pixels below or above the threshold to zero?:Below threshold\n\
-		Subtract the threshold value from the remaining pixel intensities?:No\n\
-		Number of pixels by which to expand the thresholding around those excluded bright pixels:0.0\n\
-		Threshold setting version:1\n\
-		Threshold strategy:Adaptive\n\
-		Thresholding method:Otsu\n\
-		Select the smoothing method for thresholding:No smoothing\n\
-		Threshold smoothing scale:1.0\n\
-		Threshold correction factor:1.0\n\
-		Lower and upper bounds on threshold:0.0,1.0\n\
-		Approximate fraction of image covered by objects?:0.01\n\
-		Manual threshold:0.0\n\
-		Select the measurement to threshold with:None\n\
-		Select binary image:None\n\
-		Masking objects:None\n\
-		Two-class or three-class thresholding?:Three classes\n\
-		Minimize the weighted variance or the entropy?:Weighted variance\n\
-		Assign pixels in the middle intensity class to the foreground or the background?:Background\n\
-		Method to calculate adaptive window size:Image size\n\
-		Size of adaptive window:10\n\
+		Name the output image:EdgedImage\n\
+		Automatically calculate the threshold?:Yes\n\
+		Absolute threshold:0.2\n\
+		Threshold adjustment factor:1.0\n\
+		Select an edge-finding method:LoG\n\
+		Select edge direction to enhance:All\n\
+		Calculate Gaussian\'s sigma automatically?:Yes\n\
+		Gaussian\'s sigma value:10.0\n\
+		Calculate value for low threshold automatically?:Yes\n\
+		Low threshold value:0.1\n\
 \n\
 ImageMath:[module_num:3|svn_version:\'Unknown\'|variable_revision_number:4|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
-		Operation:Add\n\
+		Operation:Invert\n\
 		Raise the power of the result by:1.0\n\
 		Multiply the result by:1.0\n\
 		Add to result:0.0\n\
 		Set values less than 0 equal to 0?:Yes\n\
 		Set values greater than 1 equal to 1?:Yes\n\
 		Ignore the image masks?:No\n\
-		Name the output image:SecondaryPlusThreshold\n\
+		Name the output image:InvertEdge\n\
 		Image or measurement?:Image\n\
-		Select the first image:Secondary\n\
+		Select the first image:EdgedImage\n\
 		Multiply the first image by:1.0\n\
 		Measurement:\n\
 		Image or measurement?:Image\n\
-		Select the second image:SecondaryThreshold\n\
+		Select the second image:\n\
 		Multiply the second image by:1.0\n\
 		Measurement:\n\
 \n\
-IdentifyPrimaryObjects:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:10|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+EnhanceOrSuppressFeatures:[module_num:4|svn_version:\'Unknown\'|variable_revision_number:4|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+		Select the input image:Secondary\n\
+		Name the output image:EnhenceCircl\n\
+		Select the operation:Enhance\n\
+		Feature size:2\n\
+		Feature type:Circles\n\
+		Range of hole sizes:1,10\n\
+		Smoothing scale:2.0\n\
+		Shear angle:0.0\n\
+		Decay:0.95\n\
+		Enhancement method:Tubeness\n\
+\n\
+ImageMath:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:4|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+		Operation:Subtract\n\
+		Raise the power of the result by:1.0\n\
+		Multiply the result by:1.0\n\
+		Add to result:0.0\n\
+		Set values less than 0 equal to 0?:Yes\n\
+		Set values greater than 1 equal to 1?:Yes\n\
+		Ignore the image masks?:No\n\
+		Name the output image:ImageAfterMath\n\
+		Image or measurement?:Image\n\
+		Select the first image:EnhenceCircl\n\
+		Multiply the first image by:1.0\n\
+		Measurement:\n\
+		Image or measurement?:Image\n\
+		Select the second image:EdgedImage\n\
+		Multiply the second image by:5\n\
+		Measurement:\n\
+\n\
+IdentifyPrimaryObjects:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:10|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the input image:Primary\n\
 		Name the primary objects to be identified:Markers\n\
 		Typical diameter of objects, in pixel units (Min,Max):3,13\n\
@@ -142,14 +160,14 @@ IdentifyPrimaryObjects:[module_num:4|svn_version:\'Unknown\'|variable_revision_n
 		Method to calculate adaptive window size:Image size\n\
 		Size of adaptive window:10\n\
 \n\
-IdentifySecondaryObjects:[module_num:5|svn_version:\'Unknown\'|variable_revision_number:9|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+IdentifySecondaryObjects:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:9|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the input objects:Markers\n\
 		Name the objects to be identified:Cells\n\
-		Select the method to identify the secondary objects:Propagation\n\
-		Select the input image:SecondaryPlusThreshold\n\
+		Select the method to identify the secondary objects:Watershed - Gradient\n\
+		Select the input image:ImageAfterMath\n\
 		Number of pixels by which to expand the primary objects:10\n\
 		Regularization factor:0.05\n\
-		Name the outline image:SecondaryOutlines\n\
+		Name the outline image:OutlineName\n\
 		Retain outlines of the identified secondary objects?:No\n\
 		Discard secondary objects touching the border of the image?:No\n\
 		Discard the associated primary objects?:No\n\
@@ -158,11 +176,11 @@ IdentifySecondaryObjects:[module_num:5|svn_version:\'Unknown\'|variable_revision
 		Name the new primary object outlines:FilteredNucleiOutlines\n\
 		Fill holes in identified objects?:Yes\n\
 		Threshold setting version:1\n\
-		Threshold strategy:Adaptive\n\
+		Threshold strategy:Global\n\
 		Thresholding method:Otsu\n\
 		Select the smoothing method for thresholding:Automatic\n\
 		Threshold smoothing scale:1.0\n\
-		Threshold correction factor:{threshold_correction_factor}\n\
+		Threshold correction factor:1.3\n\
 		Lower and upper bounds on threshold:0.0,1.0\n\
 		Approximate fraction of image covered by objects?:0.01\n\
 		Manual threshold:0.0\n\
@@ -170,16 +188,16 @@ IdentifySecondaryObjects:[module_num:5|svn_version:\'Unknown\'|variable_revision
 		Select binary image:None\n\
 		Masking objects:None\n\
 		Two-class or three-class thresholding?:Three classes\n\
-		Minimize the weighted variance or the entropy?:Weighted variance\n\
-		Assign pixels in the middle intensity class to the foreground or the background?:{background}\n\
+		Minimize the weighted variance or the entropy?:Entropy\n\
+		Assign pixels in the middle intensity class to the foreground or the background?:Background\
 		Method to calculate adaptive window size:Image size\n\
 		Size of adaptive window:10\n\
 \n\
-MeasureObjectSizeShape:[module_num:6|svn_version:\'Unknown\'|variable_revision_number:1|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+MeasureObjectSizeShape:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:1|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select objects to measure:Cells\n\
 		Calculate the Zernike features?:No\n\
 \n\
-SaveImages:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+SaveImages:[module_num:9|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the type of image to save:Objects\n\
 		Select the image to save:None\n\
 		Select the objects to save:Cells\n\
@@ -203,7 +221,7 @@ SaveImages:[module_num:7|svn_version:\'Unknown\'|variable_revision_number:11|sho
 		Base image folder:Elsewhere...\x7C\n\
 		Saved movie format:avi\n\
 \n\
-ExportToSpreadsheet:[module_num:8|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
+ExportToSpreadsheet:[module_num:10|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
 		Select the column delimiter:Comma (",")\n\
 		Add image metadata columns to your object data file?:No\n\
 		Limit output to a size that is allowed in Excel?:No\n\
