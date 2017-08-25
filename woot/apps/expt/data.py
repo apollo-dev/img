@@ -59,6 +59,7 @@ headers = [
 	'experiment',
 	'series',
 	'cell id',
+	'cell series id',
 	'r (um)',
 	'c (um)',
 	'z (um)',

@@ -253,9 +253,10 @@ class CellInstance(models.Model):
 		)
 
 	def line(self):
-		return '{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(
+		return '{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(
 			self.experiment.name,
 			self.series.name,
+			self.cell.pk,
 			self.cell.pk - self.series.lowest_cell_index(),
 			self.R(),
 			self.C(),

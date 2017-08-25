@@ -234,7 +234,7 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 			zmax_mask_b[blank_slate>0] = 0
 
 		# regions
-		region_mask = composite.masks.get(t=t, channel__name__contains=composite.current_region_unique).load()
+		region_mask = composite.masks.filter(t=t, channel__name__contains=composite.current_region_unique)[0].load()
 		region_mask = np.flipud(region_mask)
 		region_mask_edges = mask_edge_image(region_mask)
 

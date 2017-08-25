@@ -112,7 +112,7 @@ class Channel(models.Model):
 		cp_template = self.composite.templates.get(name='cp')
 		mask_template = self.composite.templates.get(name='mask')
 		mask_channel = self.composite.mask_channels.create(name=unique_key)
-		region_mask_channel = self.composite.mask_channels.get(name__contains=self.composite.current_region_unique)
+		region_mask_channel = self.composite.mask_channels.filter(name__contains=self.composite.current_region_unique)[0]
 
 		for cp_out_file in cp_out_file_list:
 			array = imread(os.path.join(self.composite.experiment.cp_path, cp_out_file))
