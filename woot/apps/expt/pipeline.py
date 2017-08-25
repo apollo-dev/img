@@ -9,7 +9,7 @@ def marker_pipeline(experiment_prefix, unique_key, primary_channel_name, seconda
 Version:3\n\
 DateRevision:20140723173957\n\
 GitHash:6c2d896\n\
-ModuleCount:8\n\
+ModuleCount:10\n\
 HasImagePlaneDetails:False\n\
 \n\
 LoadImages:[module_num:1|svn_version:\'Unknown\'|variable_revision_number:11|show_window:True|notes:\x5B\x5D|batch_state:array(\x5B\x5D, dtype=uint8)|enabled:True|wants_pause:False]\n\
