@@ -151,6 +151,8 @@ class Channel(models.Model):
 																																						track_instance=marker.track_instance)
 
 				# 3. create cell mask
+				marker.r = (marker.r if marker.r >= 0 else 0) if marker.r < mask.shape[1] else mask.shape[1]-1
+				marker.c = (marker.c if marker.c >= 0 else 0) if marker.c < mask.shape[0] else mask.shape[0]-1
 				gray_value_id = mask[marker.r, marker.c]
 				region_gray_value_id = region_mask[marker.r, marker.c]
 				region_instance = self.composite.series.region_instances.filter(region_track_instance__t=t, mode_gray_value_id=region_gray_value_id)
