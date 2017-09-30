@@ -41,6 +41,18 @@ class Command(BaseCommand):
 			default='', # some default
 			help='Name of the .lif archive' # who cares
 		),
+
+		make_option('--gfp', # option that will appear in cmd
+			action='store', # no idea
+			dest='gfp_channel', # refer to this in options variable
+			default='0', # some default
+		),
+
+		make_option('--bf', # option that will appear in cmd
+			action='store', # no idea
+			dest='bf_channel', # refer to this in options variable
+			default='1', # some default
+		),
 	)
 
 	args = ''
@@ -52,6 +64,8 @@ class Command(BaseCommand):
 		experiment_name = options['expt']
 		series_name = options['series']
 		lif_name = options['lif']
+		gfp_channel = int(options['gfp_channel'])
+		bf_channel = int(options['bf_channel'])
 		data_root = settings.DATA_ROOT
 		lif_root = settings.LIF_ROOT
 		bfconvert = join(data_root, 'bftools', 'bfconvert')
@@ -59,7 +73,7 @@ class Command(BaseCommand):
 
 		# 1. create experiment and series
 		if experiment_name!='' and series_name!='':
-			experiment, experiment_created = Experiment.objects.get_or_create(name=experiment_name)
+			experiment, experiment_created = Experiment.objects.get_or_create(name=experiment_name, gfp_channel=gfp_channel, bf_channel=bf_channel)
 			if experiment_created:
 				# set metadata
 				experiment.make_paths(join(data_root, experiment.name))

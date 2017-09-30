@@ -61,12 +61,12 @@ def mod_zmod(composite, mod_id, algorithm, **kwargs):
 		print('step01 | processing mod_zmod t{}/{}...'.format(t+1, composite.series.ts), end='\r')
 
 		# load gfp
-		gfp_gon = composite.gons.get(t=t, channel__name='0')
+		gfp_gon = composite.gons.get(t=t, channel__name=str(composite.experiment.gfp_channel))
 		gfp = exposure.rescale_intensity(gfp_gon.load() * 1.0)
 		gfp = gf(gfp, sigma=sigma) # <<< SMOOTHING
 
 		# load bf
-		bf_gon = composite.gons.get(t=t, channel__name='1')
+		bf_gon = composite.gons.get(t=t, channel__name=str(composite.experiment.bf_channel))
 		bf = exposure.rescale_intensity(bf_gon.load() * 1.0)
 
 		# initialise images
@@ -150,7 +150,7 @@ def mod_zmax(composite, mod_id, algorithm, **kwargs):
 		print('step01 | processing mod_zmax t{}/{}...'.format(t+1, composite.series.ts), end='\r')
 
 		# load gfp
-		gfp_gon = composite.gons.get(t=t, channel__name='0')
+		gfp_gon = composite.gons.get(t=t, channel__name=str(composite.experiment.gfp_channel))
 		gfp = exposure.rescale_intensity(gfp_gon.load() * 1.0)
 		gfp = gf(gfp, sigma=sigma) # <<< SMOOTHING
 

@@ -23,6 +23,8 @@ spacer = ' ' *	20
 class Experiment(models.Model):
 	# properties
 	name = models.CharField(max_length=255)
+	gfp_channel = models.PositiveIntegerField(default=0)
+	bf_channel = models.PositiveIntegerField(default=1)
 
 	# 1. location
 	base_path = models.CharField(max_length=255)
