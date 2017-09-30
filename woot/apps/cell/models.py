@@ -253,7 +253,7 @@ class CellInstance(models.Model):
 		)
 
 	def line(self):
-		return '{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(
+		return '{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n'.format(
 			self.experiment.name,
 			self.series.name,
 			self.cell.pk,
@@ -274,6 +274,7 @@ class CellInstance(models.Model):
 			self.AreaShape_EulerNumber,
 			self.AreaShape_FormFactor,
 			self.AreaShape_Orientation,
+			self.AreaShape_Perimeter,
 			self.AreaShape_Solidity
 		)
 

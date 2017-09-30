@@ -76,5 +76,6 @@ headers = [
 	'AreaShape_EulerNumber',
 	'AreaShape_FormFactor',
 	'AreaShape_Orientation',
+	'AreaShape_Perimeter',
 	'AreaShape_Solidity',
 ]
