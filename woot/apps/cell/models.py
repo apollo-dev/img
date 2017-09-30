@@ -274,7 +274,7 @@ class CellInstance(models.Model):
 			self.AreaShape_EulerNumber,
 			self.AreaShape_FormFactor,
 			self.AreaShape_Orientation,
-			self.AreaShape_Perimeter,
+			self.AreaShape_Perimeter*self.series.rmop,
 			self.AreaShape_Solidity
 		)
 
