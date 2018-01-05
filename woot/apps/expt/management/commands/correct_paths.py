@@ -21,38 +21,6 @@ spacer = ' ' *	20
 class Command(BaseCommand):
 	option_list = BaseCommand.option_list + (
 
-		make_option('--expt', # option that will appear in cmd
-			action='store', # no idea
-			dest='expt', # refer to this in options variable
-			default='', # some default
-			help='Name of the experiment to import' # who cares
-		),
-
-		make_option('--series', # option that will appear in cmd
-			action='store', # no idea
-			dest='series', # refer to this in options variable
-			default='', # some default
-			help='Name of the series' # who cares
-		),
-
-		make_option('--lif', # option that will appear in cmd
-			action='store', # no idea
-			dest='lif', # refer to this in options variable
-			default='', # some default
-			help='Name of the .lif archive' # who cares
-		),
-
-		make_option('--gfp', # option that will appear in cmd
-			action='store', # no idea
-			dest='gfp_channel', # refer to this in options variable
-			default='0', # some default
-		),
-
-		make_option('--bf', # option that will appear in cmd
-			action='store', # no idea
-			dest='bf_channel', # refer to this in options variable
-			default='1', # some default
-		),
 	)
 
 	args = ''
@@ -60,6 +28,9 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **options):
 		expt = Experiment.objects.get(name__contains='zhao')
-		for path in expt.paths.all():
-			if path.t < 2:
-				print(path.url, path.file_name, path.t)
+		series = expt.series.get(name='1')
+
+		# 1. shift the t value of each image in the composite by 1, starting from the top
+		#
+
+		# 2. shift the t value of every

@@ -20,7 +20,7 @@ for path in os.listdir(root_path):
             channel = int(m.group('channel'))
 
             # new path
-            new_path = '20171020_zhaoying_s4_ch{}_t{}_z{}.tiff'.format(channel, frame-1, z)
+            new_path = '20171020_zhaoying_s4_ch{}_t{}_z{}.tiff'.format(channel, frame, z)
             new_full_path = join(destination_path, new_path)
 
             # copy
