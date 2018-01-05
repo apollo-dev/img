@@ -61,4 +61,5 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		expt = Experiment.objects.get(name__contains='zhao')
 		for path in expt.paths.all():
-			print(path.url, path.file_name, path.t)
+			if path.t < 2:
+				print(path.url, path.file_name, path.t)
