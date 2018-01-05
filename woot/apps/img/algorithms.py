@@ -223,7 +223,7 @@ def mod_tile(composite, mod_id, algorithm, **kwargs):
 			blank_slate = np.zeros(zbf.shape)
 			blank_slate_img = Image.fromarray(blank_slate)
 			draw = ImageDraw.Draw(blank_slate_img)
-			draw.text((marker.c+5, r+5), '{}'.format(marker.track.cell.pk), font=ImageFont.load_default(), fill='rgb(0,0,255)')
+			draw.text((marker.c+5, r+5), '{}'.format(marker.track.cell.pk - marker.track.series.lowest_cell_index()), font=ImageFont.load_default(), fill='rgb(0,0,255)')
 			blank_slate = np.array(blank_slate_img)
 
 			zbf_mask_r[blank_slate>0] = 0

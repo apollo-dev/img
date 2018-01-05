@@ -74,10 +74,12 @@ class Command(BaseCommand):
 						c = int(float(line[3]))
 						t = int(float(line[2])) - 1
 
-						if track_id in tracks:
-							tracks[track_id].append((r,c,t))
-						else:
-							tracks[track_id] = [(r,c,t)]
+						if t > 0:
+							t = t - 1
+							if track_id in tracks:
+								tracks[track_id].append((r,c,t))
+							else:
+								tracks[track_id] = [(r,c,t)]
 
 				with open(csv_file_name, 'w+') as out_file:
 					out_file.write('expt,series,channel,id,t,r,c\n')

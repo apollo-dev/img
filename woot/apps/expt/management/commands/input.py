@@ -90,28 +90,72 @@ class Command(BaseCommand):
 				print('step01 | series {}... already exists.'.format(series_name))
 
 			# 2. if lif is not extracted, do it.
-			if len([f for f in os.listdir(experiment.storage_path) if (os.path.splitext(f)[1] in allowed_img_extensions and experiment.path_matches_series(f, series_name))]) == 0:
-
-				# extract lif
-				lif_path = join(lif_root, lif_name)
-				lif_template = '{}/{}_s%s_ch%c_t%t_z%z.tiff'.format(experiment.storage_path, experiment_name)
-
-				# run extract
-				print('step01 | Extracting lif ')
-				call('{} {} {} -series {}'.format(bfconvert, lif_path, lif_template, series_name), shell=True)
-
-			else:
-				print('step01 | .lif already extracted for experiment {}, series {}; continuing... '.format(experiment_name, series_name))
+			# if len([f for f in os.listdir(experiment.storage_path) if (os.path.splitext(f)[1] in allowed_img_extensions and experiment.path_matches_series(f, series_name))]) == 0:
+			#
+			# 	# extract lif
+			# 	lif_path = join(lif_root, lif_name)
+			# 	lif_template = '{}/{}_s%s_ch%c_t%t_z%z.tiff'.format(experiment.storage_path, experiment_name)
+			#
+			# 	# run extract
+			# 	print('step01 | Extracting lif ')
+			# 	call('{} {} {} -series {}'.format(bfconvert, lif_path, lif_template, series_name), shell=True)
+			#
+			# else:
+			# 	print('step01 | .lif already extracted for experiment {}, series {}; continuing... '.format(experiment_name, series_name))
 
 			# 3. series measurements
-			metadata_file_name = join(experiment.inf_path, '{}.txt'.format(experiment_name))
+			# metadata_file_name = join(experiment.inf_path, '{}.txt'.format(experiment_name))
 
 			# run show inf
-			lif_path = join(lif_root, lif_name)
-			print('step01 | Extracting lif metadata for experiment {}... '.format(experiment_name))
-			call('{} -nopix -omexml {} > {}'.format(showinf, lif_path, metadata_file_name), shell=True)
+			# lif_path = join(lif_root, lif_name)
+			# print('step01 | Extracting lif metadata for experiment {}... '.format(experiment_name))
+			# call('{} -nopix -omexml {} > {}'.format(showinf, lif_path, metadata_file_name), shell=True)
 
-			metadata = series_metadata(metadata_file_name, series_name)
+			# metadata = series_metadata(metadata_file_name, series_name)
+			series_metadata = {
+				'1': {
+					'rmop': 0.7568,
+					'cmop':	0.7568,
+					'zmop': 0.9572,
+					'tpf_in_seconds': 684.5,
+					'rs': 1024,
+					'cs': 1024,
+					'zs': 32,
+					'ts': 71,
+				},
+				'2': {
+					'rmop': 0.7568,
+					'cmop':	0.7568,
+					'zmop': 0.955,
+					'tpf_in_seconds': 684.5,
+					'rs': 1024,
+					'cs': 1024,
+					'zs': 30,
+					'ts': 71,
+				},
+				'3': {
+					'rmop': 0.7576,
+					'cmop':	0.7576,
+					'zmop': 0.988,
+					'tpf_in_seconds': 684.5,
+					'rs': 1024,
+					'cs': 1024,
+					'zs': 29,
+					'ts': 70,
+				},
+				'4': {
+					'rmop': 0.7568,
+					'cmop':	0.7568,
+					'zmop': 0.9572,
+					'tpf_in_seconds': 684.5,
+					'rs': 1024,
+					'cs': 1024,
+					'zs': 32,
+					'ts': 71,
+				},
+			}
+
+			metadata = series_metadata[series_name] # enter series here
 
 			series.rmop = float(metadata['rmop'])
 			series.cmop = float(metadata['cmop'])
@@ -139,9 +183,9 @@ class Command(BaseCommand):
 					print('step01 | no files found in {}'.format(root))
 
 			# 4a. correct series metadata if necessary
-			if series.paths.count():
-				series.ts = max(series.paths.all(), key=lambda p: p.t).t + 1
-			series.save()
+			# if series.paths.count():
+			# 	series.ts = max(series.paths.all(), key=lambda p: p.t).t + 1
+			# series.save()
 
 			# 5. composite
 			print('step01 | creating composite for experiment {} series {}'.format(experiment_name, series_name))
@@ -158,14 +202,14 @@ class Command(BaseCommand):
 
 			else:
 				print('step01 | zmod already exists...')
-
-			# 7. copy zcomp (for tracking) to ij directory
-			for gon in composite.channels.get(name='-zcomp').gons.all():
-				if not exists(join(composite.experiment.ij_path, series.name)):
-					os.mkdir(join(composite.experiment.ij_path, series.name))
-				sh.copy2(gon.paths.get().url, join(composite.experiment.ij_path, series.name, gon.paths.get().file_name))
-
-			# 8. copy zmean (for checking) to mean directory
+			#
+			# # 7. copy zcomp (for tracking) to ij directory
+			# for gon in composite.channels.get(name='-zcomp').gons.all():
+			# 	if not exists(join(composite.experiment.ij_path, series.name)):
+			# 		os.mkdir(join(composite.experiment.ij_path, series.name))
+			# 	sh.copy2(gon.paths.get().url, join(composite.experiment.ij_path, series.name, gon.paths.get().file_name))
+			#
+			# # 8. copy zmean (for checking) to mean directory
 			for gon in composite.channels.get(name='-zmean').gons.all():
 				if not exists(join(composite.experiment.base_path, 'mean', series.name)):
 					os.makedirs(join(composite.experiment.base_path, 'mean', series.name))
